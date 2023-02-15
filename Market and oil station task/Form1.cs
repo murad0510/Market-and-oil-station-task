@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,19 +63,17 @@ namespace Market_and_oil_station_task
             GasolineComboBox.DisplayMember = nameof(Oil.OilName);
             GasolineComboBox.Items.AddRange(oils.ToArray());
             GasolineComboBox.SelectedIndex = 0;
-
-            FoodCheckedListBox.DisplayMember = nameof(Market.Name);
-            FoodCheckedListBox.Items.AddRange(market.ToArray());
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        protected override void OnPaintBackground(PaintEventArgs e)
         {
-
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
+            using (LinearGradientBrush brush = new LinearGradientBrush(this.ClientRectangle,
+                                                                  Color.FromArgb(23, 42, 58),
+                                                                  Color.FromArgb(117, 221, 221),
+                                                                  90F))
+            {
+                e.Graphics.FillRectangle(brush, this.ClientRectangle);
+            }
         }
 
         private void GasolineComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -90,7 +89,6 @@ namespace Market_and_oil_station_task
             }
         }
 
-        public bool IsClicked { get; set; } = true;
         private void LiterGasoIilRadioBtn_CheckedChanged(object sender, EventArgs e)
         {
             if (IsClicked)
@@ -114,6 +112,7 @@ namespace Market_and_oil_station_task
         public bool IsEmpty { get; set; } = false;
         double LitirMoney = 0;
         double Money = 0;
+
         private void LitrGasoil_TextChanged(object sender, EventArgs e)
         {
             try
@@ -136,36 +135,148 @@ namespace Market_and_oil_station_task
             {
                 Money = (Double.Parse(MoneyGasOil.Text) / Double.Parse(label3.Text));
                 count = LitirMoney + Money;
-                label6.Text = count.ToString();
-
+                label6.Text = (double.Parse(label6.Text) + double.Parse(MoneyGasOil.Text)).ToString();
+                maskedTextBox1.Text = count.ToString();
             }
             catch (Exception)
             {
                 Money = 0;
                 count = LitirMoney + Money;
-                label6.Text = count.ToString();
+                label6.Text = "0";
+                maskedTextBox1.Text = count.ToString();
             }
+        }
+
+        public bool IsClicked { get; set; } = true;
+        double money = 0;
+        double hamburhgerPrice = 0;
+        double pizzaPrice = 0;
+        double freePrice = 0;
+        double cocaColaPrice = 0;
+
+        private void checkBox1_CheckedChanged_1(object sender, EventArgs e)
+        {
+
+            HamburgerAmountMaskedTxtBox.Enabled = true;
 
         }
 
-        private void groupBox3_Enter(object sender, EventArgs e)
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
+
+
+            PizzaAmountMaskedTxtBox.Enabled = true;
 
         }
 
-        private void label13_Click(object sender, EventArgs e)
+        private void FreeCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+
+
+            FreeAmountMaskedTxtBox.Enabled = true;
 
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void Coca_colaCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            HotDogAmountMaskedTxtBox.Enabled = false;
+
+            CocaColaAmountMaskedTxtBox.Enabled = true;
+
         }
 
-        private void FoodCheckedListBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void HamburgerAmountMaskedTxtBox_TextChanged(object sender, EventArgs e)
         {
+            try
+            {
+                hamburhgerPrice = int.Parse(HamburgerAmountMaskedTxtBox.Text) * double.Parse(HamburgerPriceMaskedTextBox.Text);
+                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice) / 100;
+                label14.Text = money.ToString();
+            }
+            catch (Exception)
+            {
+                hamburhgerPrice = 0;
+                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice) / 100;
+                label14.Text = money.ToString();
+            }
+        }
 
+        private void PizzaAmountMaskedTxtBox_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                pizzaPrice = int.Parse(PizzaAmountMaskedTxtBox.Text) * double.Parse(PizzaPriceMaskedTextBox.Text);
+                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice) / 100;
+                label14.Text = money.ToString();
+            }
+            catch (Exception)
+            {
+                pizzaPrice = 0;
+                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice) / 100;
+                label14.Text = money.ToString();
+            }
+        }
+
+        private void KokakolaAmountMaskedTxtBox_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cocaColaPrice = double.Parse(CocaColaPriceMaskedTextBox.Text) * int.Parse(CocaColaAmountMaskedTxtBox.Text);
+                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice) / 100;
+                label14.Text = money.ToString();
+            }
+            catch (Exception)
+            {
+                cocaColaPrice = 0;
+                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice) / 100;
+                label14.Text = money.ToString();
+            }
+        }
+
+        private void FreeAmountMaskedTxtBox_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                freePrice = double.Parse(FreePriceMaskedTextBox.Text) * int.Parse(FreeAmountMaskedTxtBox.Text);
+                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice) / 100;
+                label14.Text = money.ToString();
+            }
+            catch (Exception)
+            {
+                freePrice = 0;
+                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice) / 100;
+                label14.Text = money.ToString();
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (label6.Text != "" && label6.Text != "")
+            {
+                label10.Text = (double.Parse(label6.Text) + double.Parse(label14.Text)).ToString();
+            }
+            else if (label6.Text == "")
+            {
+                label10.Text = label14.Text;
+            }
+            else if (label6.Text == "")
+            {
+                label10.Text = label6.Text;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void button2_MouseEnter(object sender, EventArgs e)
+        {
+            ExitButton.BackColor = Color.Red;
+        }
+
+        private void button2_MouseLeave(object sender, EventArgs e)
+        {
+            ExitButton.BackColor = Color.White;
         }
     }
 }
