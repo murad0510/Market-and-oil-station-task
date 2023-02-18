@@ -13,6 +13,7 @@ namespace Market_and_oil_station_task
 {
     public partial class Form1 : Form
     {
+
         List<Oil> oils = new List<Oil>
         {
                 new Oil
@@ -55,6 +56,8 @@ namespace Market_and_oil_station_task
                 Price=0.50,
             }
         };
+
+        List<Check> checks = new List<Check>();
 
         public Form1()
         {
@@ -119,13 +122,13 @@ namespace Market_and_oil_station_task
             {
                 LitirMoney = (Double.Parse(LitrGasoil.Text) * Double.Parse(label3.Text));
                 count = LitirMoney + Money;
-                label6.Text = count.ToString();
+                amountOilLbl.Text = count.ToString();
             }
             catch (Exception)
             {
                 LitirMoney = 0;
                 count = LitirMoney + Money;
-                label6.Text = count.ToString();
+                amountOilLbl.Text = count.ToString();
             }
         }
 
@@ -135,14 +138,14 @@ namespace Market_and_oil_station_task
             {
                 Money = (Double.Parse(MoneyGasOil.Text) / Double.Parse(label3.Text));
                 count = LitirMoney + Money;
-                label6.Text = (double.Parse(label6.Text) + double.Parse(MoneyGasOil.Text)).ToString();
+                amountOilLbl.Text = (double.Parse(amountOilLbl.Text) + double.Parse(MoneyGasOil.Text)).ToString();
                 maskedTextBox1.Text = count.ToString();
             }
             catch (Exception)
             {
                 Money = 0;
                 count = LitirMoney + Money;
-                label6.Text = "0";
+                amountOilLbl.Text = "0";
                 maskedTextBox1.Text = count.ToString();
             }
         }
@@ -183,20 +186,19 @@ namespace Market_and_oil_station_task
             CocaColaAmountMaskedTxtBox.Enabled = true;
 
         }
-
         private void HamburgerAmountMaskedTxtBox_TextChanged(object sender, EventArgs e)
         {
             try
             {
                 hamburhgerPrice = int.Parse(HamburgerAmountMaskedTxtBox.Text) * double.Parse(HamburgerPriceMaskedTextBox.Text);
-                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice) / 100;
-                label14.Text = money.ToString();
+                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice);
+                amountRestarantLbl.Text = money.ToString();
             }
             catch (Exception)
             {
                 hamburhgerPrice = 0;
-                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice) / 100;
-                label14.Text = money.ToString();
+                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice);
+                amountRestarantLbl.Text = money.ToString();
             }
         }
 
@@ -205,14 +207,14 @@ namespace Market_and_oil_station_task
             try
             {
                 pizzaPrice = int.Parse(PizzaAmountMaskedTxtBox.Text) * double.Parse(PizzaPriceMaskedTextBox.Text);
-                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice) / 100;
-                label14.Text = money.ToString();
+                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice);
+                amountRestarantLbl.Text = money.ToString();
             }
             catch (Exception)
             {
                 pizzaPrice = 0;
-                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice) / 100;
-                label14.Text = money.ToString();
+                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice);
+                amountRestarantLbl.Text = money.ToString();
             }
         }
 
@@ -221,14 +223,14 @@ namespace Market_and_oil_station_task
             try
             {
                 cocaColaPrice = double.Parse(CocaColaPriceMaskedTextBox.Text) * int.Parse(CocaColaAmountMaskedTxtBox.Text);
-                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice) / 100;
-                label14.Text = money.ToString();
+                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice);
+                amountRestarantLbl.Text = money.ToString();
             }
             catch (Exception)
             {
                 cocaColaPrice = 0;
-                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice) / 100;
-                label14.Text = money.ToString();
+                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice);
+                amountRestarantLbl.Text = money.ToString();
             }
         }
 
@@ -237,31 +239,93 @@ namespace Market_and_oil_station_task
             try
             {
                 freePrice = double.Parse(FreePriceMaskedTextBox.Text) * int.Parse(FreeAmountMaskedTxtBox.Text);
-                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice) / 100;
-                label14.Text = money.ToString();
+                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice);
+                amountRestarantLbl.Text = money.ToString();
             }
             catch (Exception)
             {
                 freePrice = 0;
-                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice) / 100;
-                label14.Text = money.ToString();
+                money = (hamburhgerPrice + pizzaPrice + freePrice + cocaColaPrice);
+                amountRestarantLbl.Text = money.ToString();
             }
         }
-
+        Form2 form2 = new Form2();
         private void button1_Click(object sender, EventArgs e)
         {
-            if (label6.Text != "" && label6.Text != "")
+            if (hamburhgerPrice > 0)
             {
-                label10.Text = (double.Parse(label6.Text) + double.Parse(label14.Text)).ToString();
+                Check check = new Check();
+                check.Name = HamburgerCheckBox.Text;
+                check.Price = hamburhgerPrice;
+                check.Count = int.Parse(HamburgerAmountMaskedTxtBox.Text);
+                checks.Add(check);
             }
-            else if (label6.Text == "")
+            if (pizzaPrice > 0)
             {
-                label10.Text = label14.Text;
+                Check check1 = new Check();
+                check1.Name = PizzaCheckBox.Text;
+                check1.Price = pizzaPrice;
+                check1.Count = int.Parse(PizzaAmountMaskedTxtBox.Text);
+                checks.Add(check1);
             }
-            else if (label6.Text == "")
+
+            if (freePrice > 0)
             {
-                label10.Text = label6.Text;
+                Check check2 = new Check();
+                check2.Name = FreeCheckBox.Text;
+                check2.Price = freePrice;
+                check2.Count = int.Parse(FreeAmountMaskedTxtBox.Text);
+                checks.Add(check2);
             }
+
+            if (cocaColaPrice > 0)
+            {
+                Check check3 = new Check();
+                check3.Name = Coca_colaCheckBox.Text;
+                check3.Price = cocaColaPrice;
+                check3.Count = int.Parse(CocaColaAmountMaskedTxtBox.Text);
+                checks.Add(check3);
+            }
+
+            if (amountOilLbl.Text != "" && amountRestarantLbl.Text != "")
+            {
+                int y = 100;
+                label10.Text = (double.Parse(amountOilLbl.Text) + double.Parse(amountRestarantLbl.Text)).ToString();
+
+                foreach (var item in checks)
+                {
+                    var uc = new UserControl1();
+                    uc.FoodName = item.Name;
+                    uc.FoodCount = item.Count;
+                    uc.FoodPrice = item.Price;
+                    uc.Location = new Point(0, y);
+                    y += 100;
+                    form2.Controls.Add(uc);
+                    form2.CommonPrice = money;
+                }
+            }
+            else if (amountOilLbl.Text == "")
+            {
+                label10.Text = amountRestarantLbl.Text;
+                int y = 100;
+
+                foreach (var item in checks)
+                {
+                    var uc = new UserControl1();
+                    uc.FoodName = item.Name;
+                    uc.FoodCount = item.Count;
+                    uc.FoodPrice = item.Price;
+                    uc.Location = new Point(0, y);
+                    y += 100;
+                    form2.Controls.Add(uc);
+                    form2.CommonPrice = money;
+                }
+            }
+            else if (amountRestarantLbl.Text == "")
+            {
+                label10.Text = amountOilLbl.Text;
+            }
+            form2.Show();
         }
 
         private void button2_Click(object sender, EventArgs e)
